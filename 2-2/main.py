@@ -4,9 +4,9 @@ file = open('2-2/input.txt')
 count = 0
 
 def check_validity(levels, tolerate):
-    diff_row = [lj-li for li, lj in zip(levels, levels[1:])]
-    increasing = [diff > 0 and diff < 4 for diff in diff_row]
-    decreasing = [diff < 0 and diff > -4 for diff in diff_row]
+    levels_div = [lj-li for li, lj in zip(levels, levels[1:])]
+    increasing = [diff > 0 and diff < 4 for diff in levels_div]
+    decreasing = [diff < 0 and diff > -4 for diff in levels_div]
     if all(increasing) or all(decreasing):
         return True
     elif not tolerate:

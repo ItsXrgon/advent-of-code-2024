@@ -14,17 +14,11 @@ for line in file:
 
     safe = True
     
-    for i in range(len(levels) - 2):
-        if not check_validity(levels[i], levels[i+1]) or not check_validity(levels[i+1], levels[i+2]):
-            safe = False
-            break 
-        if levels[i] > levels[i + 1] and not levels[i+1] > levels[i + 2]:
-            safe = False
-            break
-        if levels[i] < levels[i + 1] and not levels[i+1] < levels[i + 2]:
-            safe = False
-            break
-    if safe:
+    levels_div = [lj-li for li, lj in zip(levels, levels[1:])]
+    increasing = [diff > 0 and diff < 4 for diff in levels_div]
+    decreasing = [diff < 0 and diff > -4 for diff in levels_div]
+    
+    if all(increasing) or all(decreasing):
         count += 1
     
 print(count)
