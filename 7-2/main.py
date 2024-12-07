@@ -17,13 +17,8 @@ def evaluate_symbol(goal, current_value, rest):
     mul_value = current_value * rest[0]
     concat_value = int(str(current_value) + str(rest[0]))
     
-    test_satisfied = add_value == goal or mul_value == goal or concat_value == goal
-    
-    if test_satisfied:
-        return True
-    
     if len(rest) == 1:
-        return False
+       return add_value == goal or mul_value == goal or concat_value == goal
     else:
         return evaluate_symbol(goal, add_value, rest[1:]) or evaluate_symbol(goal, mul_value, rest[1:]) or evaluate_symbol(goal, concat_value, rest[1:])
 
