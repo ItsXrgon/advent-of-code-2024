@@ -7,9 +7,6 @@ count = 0
 for line in file:
    puzzle_input += [line.rstrip()]
 
-width = max(len(puzzle_input), len(puzzle_input[0]))
-height = min(len(puzzle_input), len(puzzle_input[0]))
-
 def match_word_in_line(line):
     for i in range(len(line) - len(word) + 1):
         chars = line[i:i+len(word)]

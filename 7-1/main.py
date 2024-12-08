@@ -11,7 +11,7 @@ for line in file:
 
 def evaluate_symbol(goal, current_value, rest):
     if len(rest) == 0:
-        return 0
+        return goal == current_value
 
     add_value = current_value + rest[0]
     mul_value = current_value * rest[0]
