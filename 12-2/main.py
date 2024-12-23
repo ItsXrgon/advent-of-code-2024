@@ -1,6 +1,6 @@
-# Dec 12 2024 - part 1
+# Dec 12 2024 - part 2
 
-with open("12-1/input.txt", "r") as file:
+with open("12-2/input.txt", "r") as file:
     lines = file.read().strip().split("\n")
     n, m = len(lines), len(lines[0])
     graph = {i + j * 1j: c for i, r in enumerate(lines) for j, c in enumerate(r)}
@@ -31,5 +31,5 @@ ans = 0
 for node in graph:
     if node not in visited and graph[node] != "#":
         area, perimeter, sides = dfs(visited, node, graph[node], 1)
-        ans += area * perimeter
+        ans += area * sides
 print(ans)
