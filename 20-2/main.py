@@ -41,23 +41,20 @@ def run_race(track: list[list[int]], start: tuple[int]):
 track = run_race(race, start)
 normal_time = len(track)
 cheats = 0
-for track_cell in track:
-    tidx = track.index(track_cell)
+for tidx in range(len(track)):
+    track_cell = track[tidx]
     tx, ty = track_cell
     neighbors = []
     
-    for x in range(-20, 21):
-        for y in range(-20 + abs(x), 20 - abs(x) + 1):
-            new_cell = (tx + x, ty + y)
-            try: 
-                if race[tx + x][ty + y] != '#':
-                    neighbors.append(track.index(new_cell))
-            except:
-                continue
+    for nidx in range(tidx + 3, len(track)):
+        neighbor = track[nidx]
+        nx, ny = neighbor
+        dx, dy = (tx - nx, ty - ny)
+        moves_made = abs(dx) + abs(dy)
+        if moves_made <= 20:
+            neighbors.append(nidx)
     
     for nidx in neighbors:     
-        if nidx - 3 <= tidx: continue # not worth cheating
-        
         neighbor = track[nidx]
         
         nx, ny = neighbor

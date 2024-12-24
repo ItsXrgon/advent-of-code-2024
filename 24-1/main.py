@@ -1,9 +1,8 @@
 # Dec 24 2024 - part 1
 
-
 values = dict()
 connections = dict()
-z_count = 0
+binary = []
 with open('24-1/input.txt') as f:
     starting_values, input_gates  = f.read().split('\n\n')
     
@@ -19,7 +18,7 @@ with open('24-1/input.txt') as f:
             "gate": gate,
         }
         if output[0] == 'z':
-            z_count += 1
+            binary.append(-1)
                     
 while True:
     all_z_found = True
@@ -63,7 +62,6 @@ while True:
     if all_z_found:
         break
 
-binary = [-1] * z_count
 for value in values:
     if value[0] == 'z':
         index = int(value.replace('z', ''))

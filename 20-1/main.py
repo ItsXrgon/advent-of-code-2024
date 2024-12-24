@@ -41,8 +41,8 @@ def run_race(track: list[list[int]], start: tuple[int]):
 track = run_race(race, start)
 normal_time = len(track)
 cheats = 0
-for track_cell in track:
-    tidx = track.index(track_cell)
+for tidx in range(len(track)):
+    track_cell = track[tidx]
     tx, ty = track_cell
     neighbors = []
     
