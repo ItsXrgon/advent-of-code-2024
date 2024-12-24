@@ -1,77 +1,33 @@
 # Dec 17 2024 - part 2
 
-import re
-num_regex = r'-?\d+'
+from re import findall
 
-reg_a = 0
-reg_b = 0
-reg_c = 0
-instructions = []
-out = ""
+a, b, c, *prog = [int(n) for n in findall("(\d+)", open("17-2/input.txt").read())]
 
-with open('17-2/input.txt') as file:
-    registers_input, instructions_input = file.read().split('\n\n')
-    nums = [int(num.replace(': ', '')) for num in re.findall(f': {num_regex}', registers_input)]
-    reg_a = nums[0]
-    reg_b = nums[1]
-    reg_c = nums[2]
-    
-    target = instructions_input.replace('Program: ', '')
-    instructions = [(int(opcode), int(operand)) for inst in re.findall(f'{num_regex},{num_regex}', target) for opcode, operand in [inst.split(',')]]
-    
-def get_combo_operand(operand: int):
-    if operand < 4:
-        return operand
-
-    return [reg_a, reg_b, reg_c][operand - 4]
-
-def run_program(a, program):
-    global reg_a, reg_b, reg_c
-    reg_a = a
-    reg_b = 0
-    reg_c = 0
-
-    out = ""
-    i = 0
-    
-    while i < len(program):
-        opcode, operand = program[i]
-        
-        skip_inc = False
-        
-        if opcode == 0:
-            reg_a = reg_a // 2 ** get_combo_operand(operand)
-        elif opcode == 1:
-            reg_b = reg_b ^ operand
-        elif opcode == 2:
-            reg_b = get_combo_operand(operand) % 8
-        elif opcode == 3:
-            if reg_a != 0:
-                i = operand // 2
-                skip_inc = True
-        elif opcode == 4:
-            reg_b = reg_b ^ reg_c
-        elif opcode == 5:
-            out += str(get_combo_operand(operand) % 8) + ','
-        elif opcode == 6:
-            reg_b = reg_a // 2 ** get_combo_operand(operand)
-        elif opcode == 7:
-            reg_c = reg_a // 2 ** get_combo_operand(operand)
-        
-        if not skip_inc:
-            i += 1
-
+def run(prog, a):
+    ip, b, c, out = 0, 0, 0, []
+    while ip>=0 and ip<len(prog):
+        lit, combo = prog[ip+1], [0,1,2,3,a,b,c,99999][prog[ip+1]]
+        match prog[ip]:
+            case 0: a = int(a / 2**combo)       # adv
+            case 1: b = b ^ lit                 # bxl
+            case 2: b = combo % 8               # bst
+            case 3: ip = ip if a==0 else lit-2  # jnz
+            case 4: b = b ^ c                   # bxc
+            case 5: out.append(combo % 8)       # out
+            case 6: b = int(a / 2**combo)       # bdv
+            case 7: c = int(a / 2**combo)       # cdv
+        ip+=2
     return out
 
-def get_best_quine_input(program, cursor, sofar):
-    for candidate in range(8):
-        if run_program(sofar * 8 + candidate, program) == program[cursor:]:
-            if cursor == 0:
-                return sofar * 8 + candidate
-            ret = get_best_quine_input(program, cursor - 1, sofar * 8 + candidate)
-            if ret is not None:
-                return ret
-    return None
-
-print(out[0:len(out)-1])
-print(get_best_quine_input(instructions, len(instructions) - 1, 0))
+target = prog[::-1]
+def find_a(a=0, depth=0):
+    if depth == len(target):
+        return a
+    for i in range(8):
+        output = run(prog, a*8 + i)
+        if output and output[0] == target[depth]:
+            if result := find_a((a*8 + i), depth+1): 
+                return result
+    return 0
+print(find_a())

@@ -1,15 +1,24 @@
-# Dec 24 2024 - part 1
+# Dec 24 2024 - part 2
 
 values = dict()
 connections = dict()
 binary = []
-with open('24-1/input.txt') as f:
+x_bin = []
+y_bin = []
+
+with open('24-2/input.txt') as f:
     starting_values, input_gates  = f.read().split('\n\n')
     
     for starting_value in starting_values.split('\n'):
         variable, value = starting_value.split(': ')
         values[variable] = int(value)
         
+        if variable[0] == 'x':
+            x_bin.append(value)
+        if variable[0] == 'y':
+            y_bin.append(value)
+    x_bin.reverse()
+    y_bin.reverse()     
     for input_gate in input_gates.split('\n'):
         input, output_key = input_gate.split(' -> ')
         var1, gate, var2 = input.split(" ")
@@ -19,6 +28,10 @@ with open('24-1/input.txt') as f:
         }
         if output_key[0] == 'z':
             binary.append(-1)
+
+x = int("".join(x_bin), 2)
+y = int("".join(y_bin), 2)
+z = x + y
 
 def solve_connection(connection: dict):
     gate = connection['gate']
@@ -61,11 +74,6 @@ for z_connection in connections:
         continue
     index = int(z_connection.replace('z', ''))
     binary[index] = str(solve_connection(connections[z_connection]))
-    print(binary)
 binary.reverse()
-
-print(int("".join(binary), 2))
-    
-# < 53624194074598
-# = 53190357879014
-# > 35495193363686
+print(bin(z).removeprefix('0b'))
+print("".join(binary))

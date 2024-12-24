@@ -44,8 +44,7 @@ def append_keypad_possibilities(possibilities: list[str], delta: tuple[int], sta
     else:
         y_move = '<'
     
-    moves = x_move * abs(dx) + y_move * abs(dy)
-    codes = set(list(permutations(moves, len(moves))))
+    codes = x_move * abs(dx) + y_move * abs(dy)
     
     for illegal in illegals:
         if start == illegal:
