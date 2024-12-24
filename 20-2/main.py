@@ -1,7 +1,7 @@
-# Dec 20 2024 - part 1
+# Dec 20 2024 - part 2
 
 race = []
-with open('20-1/input.txt') as f:
+with open('20-2/input.txt') as f:
     x = 0
     for line in f:
         y = 0
@@ -46,8 +46,8 @@ for track_cell in track:
     tx, ty = track_cell
     neighbors = []
     
-    for x in range(-2, 3):
-        for y in range(-2 + abs(x), 2 - abs(x) + 1):
+    for x in range(-20, 21):
+        for y in range(-20 + abs(x), 20 - abs(x) + 1):
             new_cell = (tx + x, ty + y)
             try: 
                 if race[tx + x][ty + y] != '#':
@@ -63,9 +63,9 @@ for track_cell in track:
         nx, ny = neighbor
         dx, dy = (tx - nx, ty - ny)
         moves_made = abs(dx) + abs(dy)
-        
+    
         new_time = normal_time - nidx + tidx + moves_made
-        #print('cheating from', track_cell, "to", neighbor, "benefit", normal_time - new_time)
+        
         if normal_time - new_time >= 100:
             cheats += 1
 
